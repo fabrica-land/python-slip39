@@ -49,12 +49,13 @@ SIGNTOOL	?= "c:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x86\signtoo
 
 NIX_OPTS	?= # --pure
 
-# PY[3] is the target Python interpreter; require 3.11+.  Detect if it is named python3 or python.
-PY3		?= $(shell python3 --version >/dev/null 2>&1 && echo python3 || echo python )
-PY3_V		= $(shell $(PY3) -c "import sys; print('-'.join((next(iter(filter(None,sys.executable.split('/')))),sys.platform,sys.implementation.cache_tag)))" 2>/dev/null )
-VERSION		= $(shell $(PY3) -c 'exec(open("slip39/version.py").read()); print( __version__ )')
+# PY[3] is the target Python interpreter; require 3.11+.  Detect if it is named python3 or python, and if system, nix or venv-supplied.
+PYTHON		?= $(shell python3 --version >/dev/null 2>&1 && echo python3 || echo python )
+PYTHON_P	= $(shell which $(PYTHON))
+PYTHON_V	= $(shell $(PYTHON) -c "import sys; print('-'.join((('venv' if sys.prefix != sys.base_prefix else next(iter(filter(None,sys.base_prefix.split('/'))))),sys.platform,sys.implementation.cache_tag)))" 2>/dev/null )
+VERSION		= $(shell $(PYTHON) -c 'exec(open("slip39/version.py").read()); print( __version__ )')
 WHEEL		= dist/slip39-$(VERSION)-py3-none-any.whl
-PLATFORM	?= $(shell $(PY3) -c "import sys; print( sys.platform )" )
+PLATFORM	?= $(shell $(PYTHON) -c "import sys; print( sys.platform )" )
 ifeq ($(PLATFORM),darwin)
 	INSTALLER	:= pkg
 else ifeq ($(PLATFORM),win32)
@@ -64,9 +65,9 @@ else
 endif
 
 # To see all pytest output, uncomment --capture=no, ...
-PYTESTOPTS	= -v --log-cli-level=WARNING  # --capture=no  # --doctest-modules 
+PYTEST_OPTS	?= -v --log-cli-level=WARNING  # --capture=no  # --doctest-modules 
 
-PY3TEST		= $(PY3) -m pytest $(PYTESTOPTS)
+PYTEST		= $(PYTHON) -m pytest $(PYTEST_OPTS)
 
 # VirtualEnv: Build them in eg. ~/src/python-slip39-1.2.3/
 # o Will use the *current* git branch when creating a venv and populating it
@@ -74,7 +75,7 @@ PY3TEST		= $(PY3) -m pytest $(PYTESTOPTS)
 GHUB_NAME	= python-slip39
 
 VENV_DIR	= $(abspath $(dir $(abspath $(lastword $(MAKEFILE_LIST))))/.. )
-VENV_NAME	= $(GHUB_NAME)-$(VERSION)-$(PY3_V)
+VENV_NAME	= $(GHUB_NAME)-$(VERSION)-$(PYTHON_V)
 VENV		= $(VENV_DIR)/$(VENV_NAME)
 VENV_OPTS	= # --copies # Doesn't help; still references some system libs.
 
@@ -96,10 +97,10 @@ help:
 	@echo "  print-PLATFORM		  prints the detected PLATFORM"
 
 test:
-	$(PY3TEST)
+	$(PYTEST) $(PYTEST_OPTS)
 
 analyze:
-	$(PY3) -m flake8 --color never -j 1 --max-line-length=250 \
+	$(PYTHON) -m flake8 --color never -j 1 --max-line-length=250 \
 	  --exclude slip39/tabulate \
 	  --ignore=W503,E201,E202,E203,E127,E221,E223,E226,E231,E241,E242,E251,E265,E272,E274 \
 	  slip39
@@ -326,7 +327,7 @@ $(PAY-TEST-LIC):	GRANTS="{\"crypto-licensing-server\": {\
 # Create .crypto-keypair from seed; note: if the make rule fails, intermediate files are deleted.
 # We expect any password to be transmitted in CRYPTO_LIC_PASSWORD env. var.
 %.crypto-keypair: %.crypto-seed
-	$(PY3) -m crypto_licensing $(GLOBAL_OPTIONS)		\
+	$(PYTHON) -m crypto_licensing $(GLOBAL_OPTIONS)		\
 	    --name $(KEYNAME)					\
 	    --extra $(dir $(basename $@ )) --reverse-save	\
 	    registered						\
@@ -335,7 +336,7 @@ $(PAY-TEST-LIC):	GRANTS="{\"crypto-licensing-server\": {\
 
 # Create .crypto-license, signed by .crypto-keypair
 %.crypto-license : %.crypto-keypair
-	$(PY3) -m crypto_licensing $(GLOBAL_OPTIONS)		\
+	$(PYTHON) -m crypto_licensing $(GLOBAL_OPTIONS)		\
 	    --name $(KEYNAME)					\
 	    --extra $(dir $(basename $@ )) --reverse-save	\
 	    license						\
@@ -348,31 +349,41 @@ $(PAY-TEST-LIC):	GRANTS="{\"crypto-licensing-server\": {\
 # 
 # VirtualEnv build, install and activate
 #
+#     Create, start and run commands in "interactive" shell with a python venv's activate init-file.
+# Doesn't allow recursive creation of a venv with a venv-supplied python.  Alters the bin/activate
+# to include the user's .bashrc (eg. Git prompts, aliases, ...)
+#
+
+venv-%:			$(VENV)
+	@echo; echo "*** Running in $< VirtualEnv: make $*"
+	@bash --init-file $</bin/activate -ic "make $*"
 
 venv:			$(VENV)
 	@echo; echo "*** Activating $< VirtualEnv for Interactive $(SHELL)"
 	@bash --init-file $</bin/activate -i
 
 $(VENV):
+	@[[ "$(PYTHON_V)" =~ "^venv" ]] && ( echo -e "\n\n!!! $@ Cannot start a venv within a venv"; false ) || true
 	@echo; echo "*** Building $@ VirtualEnv..."
-	@rm -rf $@ && $(PY3) -m venv $(VENV_OPTS) $@ \
+	@rm -rf $@ && $(PYTHON) -m venv $(VENV_OPTS) $@ && sed -i -e '1s:^:. $$HOME/.bashrc\n:' $@/bin/activate \
 	    && source $@/bin/activate \
-	    && make install install-tests
+	    && make install-tests install
 
 
 wheel:			deps $(WHEEL)
 
 $(WHEEL):		FORCE
-	$(PY3) -m pip install -r requirements-tests.txt
-	$(PY3) -m build
+	$(PYTHON) -m pip install -r requirements-tests.txt
+	$(PYTHON) -m build
 	@ls -last dist
 
 # Install from wheel, including all optional extra dependencies (except dev)
 install:		$(WHEEL) FORCE
-	$(PY3) -m pip install --force-reinstall $<[all]
+	$(PYTHON) -m pip install --force-reinstall $<[all]
 
 install-%:  # ...-dev, -tests
-	$(PY3) -m pip install --upgrade -r requirements-$*.txt
+	$(PYTHON) -m pip install --upgrade -r requirements-$*.txt
+
 
 # Building / Signing / Notarizing and Uploading the macOS or win32 App
 # o TODO: no signed and notarized package yet accepted for upload by macOS App Store
@@ -412,7 +423,7 @@ app-pkg-upload:		dist/SLIP-39-$(VERSION).pkg.upload-package
 # 
 build/exe.$(CXFREEZE_EXT)/SLIP-39.exe:
 	@echo -e "\n\n*** Building $@"
-	@$(PY3) setup.py build_exe > cx_Freeze.build_exe.log \
+	@$(PYTHON) setup.py build_exe > cx_Freeze.build_exe.log \
 	     && echo -e "\n\n*** $@ Build successfully:" \
 	     || ( echo -e "\n\n!!! $@ Build failed:"; tail -20 cx_Freeze.build_exe.log; false )
 
@@ -423,7 +434,7 @@ dist/slip39-$(VERSION)-win64.msi: build/exe.$(CXFREEZE_EXT)/SLIP-39.exe # signin
 	#    /n "$(DEVID)" \
 	#	$<
 	@echo -e "\n\n*** Package $@"
-	@$(PY3) setup.py bdist_msi > $cx_Freeze.bdist_msi.log \
+	@$(PYTHON) setup.py bdist_msi > $cx_Freeze.bdist_msi.log \
 	     && echo -e "\n\n*** $@ Build successfully:" \
 	     || ( echo -e "\n\n!!! $@ Build failed:"; tail -20 cx_Freeze.bdist_msi.log; false )
 
@@ -875,11 +886,11 @@ images/SLIP-39.iconset: images/SLIP-39.png
 #   o log in to your pypi account (ie. for package maintainer only)
 #
 upload-check:
-	@$(PY3) -m twine --version \
-	    || ( echo -e "\n\n*** Missing Python modules; run:\n\n        $(PY3) -m pip install --upgrade twine\n" \
+	@$(PYTHON) -m twine --version \
+	    || ( echo -e "\n\n*** Missing Python modules; run:\n\n        $(PYTHON) -m pip install --upgrade twine\n" \
 	        && false )
 upload: 	upload-check wheel
-	$(PY3) -m twine upload --repository pypi dist/slip39-$(VERSION)*
+	$(PYTHON) -m twine upload --repository pypi dist/slip39-$(VERSION)*
 
 clean:
 	@rm -rf MANIFEST *.png build dist auto *.egg-info $(shell find . -name '__pycache__' )
@@ -892,14 +903,18 @@ slip39/payments_test/slip-39-app.crypto-license: $(SLIP-39-LIC)
 
 # Run only tests with a prefix containing the target string, eg test-api
 test-%:		deps-test
-	$(PY3TEST) $(shell find slip39 -name '*$**_test.py')
+	$(PYTEST) $(PYTEST_OPTS) $(shell find slip39 -name '*$**_test.py')
 
 # Run all tests with names matching the target string
 unit-%:		deps-test
-	$(PY3TEST) -k $*
+	$(PYTEST) $(PYTEST_OPTS) -k $*
 
 nix-%:
-	nix-shell $(NIX_OPTS) --run "make $*"
+	@if [ -r flake.nix ]; then \
+	    nix develop $(NIX_OPTS) --command make $*; \
+        else \
+	    nix-shell $(NIX_OPTS) --run "make $*"; \
+	fi
 
 #
 # Target to allow the printing of 'make' variables, eg:
