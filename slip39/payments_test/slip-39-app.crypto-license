@@ -1,0 +1,151 @@
+{
+    "license":{
+        "author":{
+            "domain":"slip39.com",
+            "name":"Perry Kundert (SLIP-39)",
+            "product":"SLIP-39 App",
+            "pubkey":"qtHHsgdsrtA83kM/C/LUN8Y2If+BIvcs1X4nYw0m0w4=",
+            "service":"slip-39-app"
+        },
+        "dependencies":[
+            {
+                "license":{
+                    "author":{
+                        "domain":"perry.kundert.ca",
+                        "name":"Perry Kundert",
+                        "product":"Perry Kundert",
+                        "pubkey":"nHxw0W9APX+4oyaDBfgexIK04CH24e2bdw70Os/tkIE=",
+                        "service":"perry-kundert"
+                    },
+                    "dependencies":[],
+                    "grant":{
+                        "perry-kundert":{
+                            "crypto":{
+                                "BTC":"bc1qq7h2hh44g65u984m8stz4xyln9gm3qenl9ww7t",
+                                "DOGE":"DGhzBb7N6mEc1MtPzwvrs8CqFiUz5MzAb4",
+                                "ETH":"0x74E581Aa16e53dAb12b8f61aC1879d4750B59Dcb",
+                                "LTC":"ltc1q8q7u4hws2adp3e6j282stkd6kqq4pwcppzg3wx",
+                                "XRP":"rnoohk76vrEuD4FZaWfS7vf414xdagTHWw",
+                                "ZEC":"t1QL8JFUcVRHanWqduYL1U4A8d95PVxcpWZ"
+                            },
+                            "crypto_":"- Payments for SLIP-39 App in Crypto, w/ licensing fees and discounts, payable automatically in-kind.",
+                            "fiat":{
+                                "USDC":"0xe4909b66FD66DA7d86114695A1256418580C8767"
+                            },
+                            "fiat_":"- Payments for Dominion products/licenses in Fiat, w/ fees payable manually in USDC."
+                        }
+                    }
+                },
+                "signature":"ogS+uFVGujZF6YPH+IMmo74S8MY8VzN380Cniq5R/c2baGA8E5vv9OZU2E46kiHDdst2W0ffe1WgaC7a0WrPDw=="
+            },
+            {
+                "license":{
+                    "author":{
+                        "domain":"dominionrnd.com",
+                        "name":"Dominion R&D Corp. (PySimpleGUI)",
+                        "product":"SLIP-39 PySimpleGUI",
+                        "pubkey":"5cijeUNWyR1mvbIJpqNmUJ6V4Od7vPEgVWOEjxiim8w=",
+                        "service":"dominion"
+                    },
+                    "client":{
+                        "name":"Perry Kundert (SLIP-39)",
+                        "pubkey":"qtHHsgdsrtA83kM/C/LUN8Y2If+BIvcs1X4nYw0m0w4="
+                    },
+                    "dependencies":[],
+                    "grant":{
+                        "slip-39-pysimplegui":{
+                            "PySimpleGUI_License":"ebyzJLMpauWrNSlxbjneNhlxVeHwliwrZmSFID6TIEkhR2pgco3LRsyPa3W9JL16d5G8lRvXbyi1IUsoIzkIxqpEYx2tVFuZcz2bVFJqRDCLIP6jMJTwcnzUMwzJYr4BNnjoAHyUNcCawzigTlG5lMjdZ2Wv5DzeZQUiRylQc8G2x0vne1WH1QllbcnJRyWsZYXiJczhaFWb9uu1IljAosiSNhSh48wfIWiewKi1TDmiFytNZGUSZ0p5cdnZNY0LInjGoDiTUjGKVRymcGnikbiHLWCaJnOfYaWX1alxTdGiF5zjdjCXIK69INkat61obTmiRqlvcQnfQIi2LfC6JeDabT291iwPYsWk5A5hIRjIooiqROGy9EtFacWm5Pptbs2o4VgFU3mIVizAZiWpFDyiYT2Ag2gWJjiEBzE4ZbXSZ8llbXG99IwAbkWBVxuXdXC7BrDEbX35J8wVLGicIDshI8knNC1bc03uRBvKboWYVHyoS2UDQeiROwiyIR0HOsT4I5y7NtycIDshIrk8RBhndaGLVgJrcU3fNQ1AZWWRQ5i7OtiMI5yyMCDlIT0ULnT2EqydLvT5AK4YI5ijwaiIRxGLFz0iZiUuVe4sccGDlhyMZmXmMciQOTisIwywMtD5Il1KLLTOEiycLoTPAi4CI9iFwviVRQW11Qh4aJWjxeByZVGgRfygZmXRNVzTISjHoOivcaGPVky4cKnulpAuZ9Gp9mtcaIWr5MpJb02X5fytbKm7QiuOYs2i9AtOIGiUwNiCSgVNB1BkZhGaReysZjXvNTzdIkjyofiFMfTicbwiLoj8ISwEMrys4CyzMSjnAmulNKTSYRidf9Qi=o=p67a2e46f0720ca53c5afa8cbdef74a7ceb99f830af0a5f453039fd6a4461a86174d3d51f63fda67d667bdb761fd56197289abd399a969bc997f7da3ec65b98be84c680e06fadada2de3a643fdf1682d896506024a558dda682a399c4d64db84232703b4225f6208e3e7ec8ccc79e76cb3a04ba4240337f39adffce0d745b8138498ac285f799c17919fd27465c96beb90103c0ab23f4949978d858eec91abf3abe6c8d2c188be40f4dde0371fc386facc98c6cd1e508bdc980676be918bf89fac44b196a6a62e4ef8673e7b820574106dbb3737e7fb520771fb812380e9a06d1b4f204529ccb202f750d733b12874accbbf5e9e32f81039ae5f9865bd446f7cf7a17a3e63060b3d07bd1b0a83e5e1522e20001d44f2feee7364364c8d2ddfba9e2433bdb116d77343300cd38fbec7df29d4c7d6c9363ec2e3a8f79cf75d7e8f7cfdca4007ddce4a51703491d0e47b095b4c4328029f0601146246eb8eb52e86257e1ead159bca1f7edf24d2afcfd0a37d962b6328b266cf358146f9c644c54b84e05490e40eff4cd186d27da12b4d2d3d5d14129e752fd8eeddc606bf74f68e453f552729e45283019efd8706d6f223d55361f4c7fd023bceafa13538e150940aa421efd31803ec4c5446a6eb58156c428a1a5373df70c04e52af271c22a6e7d9cc90af9eb7a481e9c3731b4434767a2dcf64702d0c72b50e0c219964cf820c3"
+                        }
+                    }
+                },
+                "signature":"tyW/Rl+PF1ZTAqJNO0g8Suf9K33NJVYmcCTTdVfTDZYnZkYM3P+9geGSaYCuTY/kc5N7MxTIwncct7nu7P3XDw=="
+            },
+            {
+                "license":{
+                    "author":{
+                        "domain":"dominionrnd.com",
+                        "name":"Dominion R&D Corp. (Licensing)",
+                        "product":"Crypto Licensing",
+                        "pubkey":"je1DULlAfRv05GFBPWZwwt1RdRE7FyzImJeKBmH6BKE=",
+                        "service":"crypto-licensing"
+                    },
+                    "dependencies":[
+                        {
+                            "license":{
+                                "author":{
+                                    "domain":"dominionrnd.com",
+                                    "name":"Dominion R&D Corp.",
+                                    "product":"Dominion",
+                                    "pubkey":"5cijeUNWyR1mvbIJpqNmUJ6V4Od7vPEgVWOEjxiim8w=",
+                                    "service":"dominion"
+                                },
+                                "dependencies":[],
+                                "grant":{
+                                    "dominion":{
+                                        "crypto":{
+                                            "BTC":"bc1qygm3dlynmjxuflghr0hmq6r7wmff2jd5gtgz0q",
+                                            "DOGE":"DSjk35BrGC3qSY9nVEceRowtgqjCGtgN3N",
+                                            "ETH":"0xe4909b66FD66DA7d86114695A1256418580C8767",
+                                            "LTC":"ltc1qze7264m28s830mawxml494x0nql3z9hwa78w5p",
+                                            "XRP":"rpQiTDqRikK5hde1aMrvhyZEjFHY5T2V3Z",
+                                            "ZEC":"t1daxXBrh3rNqagDewmLNgSRjqNPUVPMZhk"
+                                        },
+                                        "crypto_":"- Payments for Dominion products/licenses in Crypto, payable automatically in-kind.",
+                                        "fiat":{
+                                            "USDC":"0xe4909b66FD66DA7d86114695A1256418580C8767"
+                                        },
+                                        "fiat_":"- Payments for Dominion products/licenses in Fiat, w/ fees payable manually in USDC."
+                                    }
+                                }
+                            },
+                            "signature":"c01m/IUm+XxuS5sPR6B4g3gZILiZKGJdPPrnNZJExUa9D+nJDw6jZHenFgZWy0cJrYGFfCQgIflCDmG3E5SzBg=="
+                        }
+                    ],
+                    "grant":{
+                        "crypto-licensing":{
+                            "crypto":{
+                                "rate":"1.0%"
+                            },
+                            "crypto_":"- Payments for licenses  in Crypto, w/ fees payable automatically in kind.",
+                            "fiat":{
+                                "rate":"2.0%"
+                            },
+                            "fiat_":"- Payments for licenses in Fiat, w/ fees payable manually in USDC."
+                        }
+                    }
+                },
+                "signature":"vM2fThOgP7Oyy6k6MkVynXdJiBjxzi0/gqo0l04PBGG/vyOZlKWZIq8hFX8MIUbsPISCSsspvQBbI/p/qLWDCA=="
+            }
+        ],
+        "grant":{
+            "slip-39":{
+                "cards":8,
+                "cards_":"- Up to 8 (of 16 max) mnemonic Cards per Group are allowed.",
+                "entropy":false,
+                "entropy_":"- Poor seed entropy disallowed; Watermarks printed if detected.",
+                "groups":4,
+                "groups_":"- Up to 4 (of 16 max) Groups of mmnemonics allowed.",
+                "name":false,
+                "name_":"- The computer user account name is used, and cannot be changed.",
+                "price:":{
+                    "crypto":{
+                        "discount":"10%"
+                    },
+                    "crypto_":"- Payments for SLIP-39 App in Crypto, w/ licensing fees and discounts, payable automatically in kind.",
+                    "stripe":{
+                        "api":"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",
+                        "products":{
+                            "SLIP-39 App":{
+                                "payment":"https://buy.stripe.com/00gg2D7pKdwAdqgfYY",
+                                "price":"price_1QcyELECzTellQPJbyxc0jC5",
+                                "product":"prod_RW0EV2JHYFnVeQ"
+                            }
+                        }
+                    },
+                    "stripe_":"- Payments for SLIP-39 App in Fiat, and read-only access to Stripe API for product prices"
+                }
+            }
+        }
+    },
+    "signature":"+ELh19oQNi0Pi3bhTfRhj49lwfL40kP0BgP0gQRXUBPAVHjS0z8LBZ3zMMRr6t7ooco3XpSWbMbtbvX/xTRKDg=="
+}
