@@ -18,7 +18,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-25.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         # Requires Python3 w/ Type Annotations
