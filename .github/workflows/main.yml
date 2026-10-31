@@ -45,5 +45,8 @@ jobs:
       run: |
         make analyze
     - name: Test with pytest
+      env:
+        # Tests marked network need live external services (see pytest.ini)
+        PYTEST_ADDOPTS: "-m 'not network'"
       run: |
         make test
