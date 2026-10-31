@@ -27,7 +27,6 @@ import re
 import string
 import warnings
 
-from functools		import wraps
 from collections	import namedtuple
 from typing		import Dict, List, Sequence, Tuple, Optional, Union, Callable
 
@@ -41,9 +40,8 @@ from hdwallet.seeds	import SLIP39Seed
 from hdwallet.entropies	import SLIP39Entropy
 from hdwallet.mnemonics	import MNEMONICS
 from hdwallet.hds	import BIP44HD, BIP49HD, BIP84HD
-from hdwallet.derivations import BIP44Derivation, BIP49Derivation, BIP84Derivation, CustomDerivation
+from hdwallet.derivations import BIP44Derivation, BIP49Derivation, BIP84Derivation, CustomDerivation, IDerivation
 from hdwallet.addresses	import ADDRESSES
-from hdwallet.exceptions import SymbolError
 
 from .defaults		import (
     BITS_DEFAULT, BITS, MNEM_ROWS_COLS, GROUPS, GROUP_REQUIRED_RATIO, GROUP_THRESHOLD_RATIO, CRYPTO_PATHS
@@ -430,17 +428,17 @@ class Account:
             cls.CRYPTOCURRENCIES_BETA	       |= {validated}
 
             if str(validated_cls.DEFAULT_HD) != "BIP44":
-                raise SymbodError(
+                raise SymbolError(
                     f"Unknown default format; unable to support {validated_cls.NAME}"
                 )
             # If BIP44 supported, consider it the legacy format. If BIP49: segwit, BIP84: bech32
             cls.CRYPTO_FORMAT_PATH[validated]	= path = {}
-            cls.CRYPTO_FORMAT_SEMANTIC[validated]= sems = {}
-            cls.CRYPTO_FORMAT_ADDRESS[validated]= addr = {}
-            cls.CRYPTO_FORMAT_HD[validated]= hder = {}
-            cls.CRYPTO_FORMAT_DERIVATION[validated]= ders = {}
+            cls.CRYPTO_FORMAT_SEMANTIC[validated] = sems = {}
+            cls.CRYPTO_FORMAT_ADDRESS[validated] = addr = {}
+            cls.CRYPTO_FORMAT_HD[validated] = hder = {}
+            cls.CRYPTO_FORMAT_DERIVATION[validated] = ders = {}
             cls.CRYPTO_FORMAT[validated]	= "legacy"
-            
+
             # The default format unless otherwise specified will be .CRYPTO_FORMAT[<SYMBOL>]; it'll
             # be the highest BIP44/49/84 support by the cryptocurrency.
             if hasattr( validated_cls.HDS, "BIP44" ):

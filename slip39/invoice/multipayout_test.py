@@ -35,6 +35,7 @@ solcx_options			= dict(
 )
 
 
+@pytest.mark.network
 def test_solcx_smoke():
     solcx.install_solc( version="0.7.0" )
     contract_0_7_0 = solcx.compile_source(

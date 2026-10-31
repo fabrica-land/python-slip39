@@ -231,6 +231,7 @@ USA
 )
 
 
+@pytest.mark.network
 def test_tabulate( tmp_path ):
     accounts			= [
         account( SEED_ZOOS, crypto='Ripple' ),
@@ -626,6 +627,7 @@ invoices_to_write		= [
 ]
 
 
+@pytest.mark.network
 @pytest.mark.parametrize( "invoices", invoices_to_write )
 def test_write_invoices( tmp_path, invoices ):
     directory		= Path( tmp_path )
