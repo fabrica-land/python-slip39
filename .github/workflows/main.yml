@@ -22,7 +22,8 @@ jobs:
     strategy:
       matrix:
         # Requires Python3 w/ Type Annotations
-        python-version: ['3.10', '3.11', '3.12', '3.13']
+        # No 3.13: hdwallet-slip39 4.x requires coincurve<21, which has no cp313 wheel
+        python-version: ['3.10', '3.11', '3.12']
 
     steps:
     - name: ENG-5167 CA trust fix (remove emSign ECC Root CA - G3)
@@ -64,5 +65,8 @@ jobs:
       run: |
         make analyze
     - name: Test with pytest
+      env:
+        # Tests marked network need live external services (see pytest.ini)
+        PYTEST_ADDOPTS: "-m 'not network'"
       run: |
         make test

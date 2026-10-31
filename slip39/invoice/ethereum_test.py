@@ -51,6 +51,7 @@ def test_etherscan_ethprice():
         f"Failed to obtain Gas Oracle after {now-gasoracle.lst:.2f}s since {ordinal(gasoracle.cnt)} try"
 
 
+@pytest.mark.network
 def test_1inch_offchainoracle():
     """Consult the 1inch offChainOracle contract to query several continuous liquidity pools for Crypto prices.
 
@@ -87,6 +88,7 @@ WBTC			= "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
 WETH			= "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
 
 
+@pytest.mark.network
 def test_tokenprice():
     """Get prices vs. the default base (ETH), and a low-value token.  Should retain precision,
     due to underlying 10^18 fixed-point offset."""
@@ -108,6 +110,7 @@ def test_tokenprice():
             "WBTC/USDC is inverted?"
 
 
+@pytest.mark.network
 def test_tokenratio():
     # Now, get the token price ratio of two tokens (both cached, relative to default ETH)
     WBTC_USDC		= tokenratio( WBTC, USDC )
