@@ -15,7 +15,7 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 
-from hdwallet.exceptions import SymbolError
+from hdwallet.exceptions import SymbolError  # noqa: F401 (re-exported)
 
 
 class SLIP39Error( Exception ):
@@ -24,4 +24,3 @@ class SLIP39Error( Exception ):
 
 class ConversionError( SLIP39Error ):
     pass
-

@@ -22,7 +22,6 @@ import json
 import logging
 import math
 import os
-import warnings
 
 from datetime		import datetime
 from collections	import namedtuple
@@ -45,7 +44,7 @@ from ..defaults		import (
     FILENAME_FORMAT,
 )
 from .components	import (
-    Coordinate, Region, Box, Image, Text,
+    Coordinate, Region, Image, Text,
     page_dimensions, layout_components, layout_card, layout_wallet,
 )
 from .printer		import (
@@ -303,7 +302,6 @@ def produce_pdf(
 
         slip39_mnems		= []
         slip39_group		= []
-        g_nam_max		= max( map( len, groups.keys() ))
         for g_nam,(g_of,g_mns) in groups.items():
             slip39_mnems.extend( g_mns )
             #slip39_group.append( f"{g_nam:{g_nam_max}}: {g_of} of {len(g_mns)} to recover" )
@@ -359,7 +357,7 @@ def produce_pdf(
               b['card-title']	= f"SLIP39 {g_name}({mn_n+1}/{len(g_mnems)}) for: {name}"
             f['card-requires']	= requires
             if not (ANONYMOUS if anonymous is None else anonymous):
-                f['card-crypto1']= f"{accounts[0][0].crypto} {accounts[0][0].path}: {accounts[0][0].address}"
+                f['card-crypto1'] = f"{accounts[0][0].crypto} {accounts[0][0].path}: {accounts[0][0].address}"
                 f['card-qr1']	= io.BytesIO( qr_acct[0].to_string(encoding='unicode').encode('UTF-8'))  # get_image()
             if not (ANONYMOUS if anonymous is None else anonymous) and len( accounts[0] ) > 1:
                 f['card-crypto2'] = f"{accounts[0][1].crypto} {accounts[0][1].path}: {accounts[0][1].address}"

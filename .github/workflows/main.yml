@@ -18,11 +18,12 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-25.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         # Requires Python3 w/ Type Annotations
-        python-version: ['3.10', '3.11', '3.12', '3.13']
+        # No 3.13: hdwallet-slip39 4.x requires coincurve<21, which has no cp313 wheel
+        python-version: ['3.10', '3.11', '3.12']
 
     steps:
     - name: Checkout repository code
